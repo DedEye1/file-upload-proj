@@ -1,0 +1,23 @@
+{
+  "name": "web",
+  "version": "1.0.0",
+  "description": "Frontent part of a project",
+  "homepage": "https://github.com/DedEye1/file-upload-proj#readme",
+  "bugs": {
+    "url": "https://github.com/DedEye1/file-upload-proj/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/DedEye1/file-upload-proj.git"
+  },
+  "license": "ISC",
+  "author": "DedEye1",
+  "type": "commonjs",
+  "main": "src/program.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "nextjs": "^0.0.3"
+  }
+}
