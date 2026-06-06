@@ -4,6 +4,9 @@ import path from 'path';
 // Загрузка .env
 dotenv.config();
 
+/**
+ * Объединённый класс данных приложения
+ */
 export default class ProgramData {
   public static readonly port = process.env.API_PORT ?? "4000";
   public static readonly uploadsDir = process.env.UPL_DIR ?? 'uploads';
