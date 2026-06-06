@@ -2,9 +2,10 @@ import type { Response, Request, NextFunction } from 'express';
 import sc from 'http-status-codes';
 import path from 'path';
 
-import type Metadata from '../dto/metadata-dto.js';
+import type MetadataDTO from '../dto/metadata-dto.js';
 import err_dto from '../dto/error-dto.js'
 import mh from '../classes/metadata-handler.js';
+import type FilesPageDTO from '../dto/files-page-dto.js';
 
 /**
  * Класс-контроллер запросов к файлам
@@ -47,7 +48,7 @@ export default class FilesController {
       res.status(sc.StatusCodes.BAD_REQUEST).json(errDTO);
       // Создание и запись метаданных в files.json
     } else {
-      const dataDTO: Metadata = {
+      const dataDTO: MetadataDTO = {
         id: path.parse(file.filename).name,
         originalName: file.originalname,
         storedName: file.filename,
@@ -66,9 +67,25 @@ export default class FilesController {
     const id = req.params.id;
   }
 
-  public getFilesQuery(req: Request, res: Response) {
-    const page = req.query.page;
-    const limit = req.query.limit;
+  /**
+   * Функция для обработки GET с query
+   */
+  public async getFilesQuery(req: Request, res: Response) {
+    const page: number = parseInt(req.query.page as string) || 1;
+    const limit: number = Math.min(parseInt(req.query.limit as string) || 10, 50);
+    const offset: number = (page - 1) * limit;
+
+    const metadataArr: MetadataDTO[] = await mh.getMetadataArr();
+    const items: MetadataDTO[] = metadataArr.slice(offset, offset + limit);
+
+    const fpDTO: FilesPageDTO = {
+      items: items,
+      page: page,
+      limit: limit,
+      total: metadataArr.length
+    }
+
+    res.status(sc.StatusCodes.OK).json(fpDTO);
   }
 
   public deleteFilesByID(req: Request, res: Response) {

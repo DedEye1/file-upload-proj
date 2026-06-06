@@ -9,6 +9,7 @@ dotenv.config();
 const port: string = process.env.API_PORT ?? "4000";
 
 const app: Application = express();
+app.set('json spaces', 2);
 
 const fc: file_control = new file_control();
 app.post('/api/files', fc.postFilesWrapper(ul.uploader.single('file')));
