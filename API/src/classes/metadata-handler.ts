@@ -1,17 +1,13 @@
 import fs from 'fs/promises';
-import path from 'path';
 
 import type MetadataDTO from '../dto/metadata-dto.js';
+import pd from './program-data.js'
 
 /**
  * Класс обработки файла files.json
  */
 export default class MetadataHandler {
   private static metadataArr: MetadataDTO[];
-
-  private static readonly dataDir: string = 'data';
-  private static readonly dataFile: string = 'files.json';
-  private static readonly dataPath: string = path.join(this.dataDir, this.dataFile);
 
   /**
    * Автоматически добавляет метаданные в files.json
@@ -32,7 +28,7 @@ export default class MetadataHandler {
    */
   private static async loadFromDisk() {
     try {
-      const metadataStr: string = (await fs.readFile(this.dataPath)).toString();
+      const metadataStr: string = (await fs.readFile(pd.dataPath)).toString();
       this.metadataArr = JSON.parse(metadataStr);
     } catch (err: any) {
       if (err.code === 'ENOENT') {
@@ -48,8 +44,8 @@ export default class MetadataHandler {
    * Сохраняет на диск массив метеданных в файл files.json, создаёт папку data/ при необходимости
    */
   private static async saveToDisk() {
-    await fs.mkdir(this.dataDir, { recursive: true });
+    await fs.mkdir(pd.dataDir, { recursive: true });
     const data: string = JSON.stringify(this.metadataArr, null, 2);
-    await fs.writeFile(this.dataPath, data);
+    await fs.writeFile(pd.dataPath, data);
   }
 }

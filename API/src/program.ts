@@ -1,12 +1,8 @@
 import express, { type Application } from 'express';
-import dotenv from 'dotenv';
 
 import ul from './classes/uploader.js';
 import file_control from './controllers/files-controller.js'
-
-// Загрузка файла .env
-dotenv.config();
-const port: string = process.env.API_PORT ?? "4000";
+import pd from './classes/program-data.js'
 
 const app: Application = express();
 app.set('json spaces', 2);
@@ -20,4 +16,4 @@ app.get('/api/files/:id', fc.getFilesByID);
 
 app.delete('/api/files/:id', fc.deleteFilesByID);
 
-app.listen(port, () => console.log(`Запуск сервера на http://localhost:${port}`));
+app.listen(pd.port, () => console.log(`Запуск сервера на http://localhost:${pd.port}`));

@@ -3,18 +3,17 @@ import fs from 'fs';
 import path from 'path';
 import { v4 } from 'uuid';
 
+import pd from './program-data.js'
+
 /**
  * Класс настройки multer
  */
 export default class Uploader {
-  private static readonly dist: string = 'uploads';
-  private static readonly allowedMimes: string[] = ['image/jpeg', 'image/png', 'image/webp', 'application/pdf'];
-
   private static storage: StorageEngine = multer.diskStorage({
     destination: (req, file, cb) => {
-      fs.mkdirSync(this.dist, { recursive: true });
+      fs.mkdirSync(pd.uploadsDir, { recursive: true });
 
-      cb(null, this.dist);
+      cb(null, pd.uploadsDir);
     },
     filename: (req, file, cb) => {
       const ext: string = path.extname(file.originalname);
@@ -30,7 +29,7 @@ export default class Uploader {
       fileSize: 5 * 1024 ** 2
     },
     fileFilter: (req, file, cb: FileFilterCallback) => {
-      if (this.allowedMimes.includes(file.mimetype)) {
+      if (pd.allowedMimes.includes(file.mimetype)) {
         cb(null, true);
       } else {
         cb(new Error('INVALID_MIME') as any, false);
