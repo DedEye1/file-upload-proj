@@ -2,10 +2,12 @@ import type { Response, Request, NextFunction } from 'express';
 import sc from 'http-status-codes';
 import path from 'path';
 
-import type MetadataDTO from '../dto/metadata-dto.js';
+import MetadataDTO from '../dto/metadata-dto.js';
+import ErrorDTO from '../dto/error-dto.js';
+import FilesPageDTO from '../dto/files-page-dto.js';
 import err_dto from '../dto/error-dto.js'
 import mh from '../classes/metadata-handler.js';
-import type FilesPageDTO from '../dto/files-page-dto.js';
+import pd from '../classes/program-data.js';
 
 /**
  * Класс-контроллер запросов к файлам
@@ -39,12 +41,12 @@ export default class FilesController {
       } else {
         errDTO = { error: 'Неизвестная ошибка', code: 'UNKNOWN_ERR' };
       }
-      console.log(`Ошибка ${errDTO.code}`);
+      console.error(`Ошибка ${errDTO.code}`);
       res.status(sc.StatusCodes.BAD_REQUEST).json(errDTO);
       // Проверка на отсутствие файла
     } else if (!file) {
       errDTO = { error: 'Файл не был предоставлен', code: 'FILE_REQUIRED' };
-      console.log('Ошибка FILE_REQUIRED');
+      console.error(`Ошибка ${errDTO.code}`);
       res.status(sc.StatusCodes.BAD_REQUEST).json(errDTO);
       // Создание и запись метаданных в files.json
     } else {
@@ -63,8 +65,36 @@ export default class FilesController {
     }
   }
 
-  public getFilesByID(req: Request, res: Response) {
-    const id = req.params.id;
+  /**
+   * Функция для обработки GET по id
+   */
+  public async getFilesByID(req: Request, res: Response) {
+    let id: string = req.params.id as string;
+    id = path.parse(id ?? '').name; // Убрать расширение запроса, если таковое присутствует
+    const metadata: MetadataDTO | undefined = await mh.getMetadataByID(id);
+    let errDTO: ErrorDTO;
+
+    // Проверка присутствия метаданных
+    if (metadata) {
+      const options = {
+        root: process.cwd(),
+        headers: {
+          'Content-Type': metadata.mime
+        }
+      };
+
+      res.sendFile(path.join(pd.uploadsDir, metadata.storedName), options, (err) => {
+        if (err && !res.headersSent) {
+          errDTO = { error: 'Неизвестная ошибка', code: 'UNKNOWN_ERR' };
+          console.error(`Ошибка ${errDTO.code}`);
+          res.status(sc.StatusCodes.BAD_REQUEST).json(errDTO);
+        }
+      });
+    } else {
+      errDTO = { error: 'Запись о файле отсутствует', code: 'NOT_FOUND' };
+      console.error(`Ошибка ${errDTO.code}`);
+      res.status(sc.StatusCodes.NOT_FOUND).json(errDTO);
+    }
   }
 
   /**

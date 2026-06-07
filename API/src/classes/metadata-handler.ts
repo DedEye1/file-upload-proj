@@ -1,6 +1,6 @@
 import fs from 'fs/promises';
 
-import type MetadataDTO from '../dto/metadata-dto.js';
+import MetadataDTO from '../dto/metadata-dto.js';
 import pd from './program-data.js'
 
 /**
@@ -18,9 +18,20 @@ export default class MetadataHandler {
     await this.saveToDisk();
   }
 
+  /**
+   * Получает загруженный массив метаданных
+   */
   public static async getMetadataArr(): Promise<MetadataDTO[]> {
     await this.loadFromDisk();
     return this.metadataArr;
+  }
+
+  /**
+   * Получает метаданные по ID из загруженного массива
+   */
+  public static async getMetadataByID(id: string): Promise<MetadataDTO | undefined> {
+    await this.loadFromDisk();
+    return this.metadataArr.find((val, ind, obj) => val.id === id);
   }
 
   /**
