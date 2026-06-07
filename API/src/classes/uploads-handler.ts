@@ -1,5 +1,6 @@
 import multer, { type FileFilterCallback, type Multer, type StorageEngine } from 'multer';
 import fs from 'fs';
+import fsp from 'fs/promises';
 import path from 'path';
 import { v4 } from 'uuid';
 
@@ -8,7 +9,7 @@ import pd from './program-data.js'
 /**
  * Класс настройки multer
  */
-export default class Uploader {
+export default class UploadsHandler {
   private static storage: StorageEngine = multer.diskStorage({
     destination: (req, file, cb) => {
       fs.mkdirSync(pd.uploadsDir, { recursive: true });
@@ -23,7 +24,10 @@ export default class Uploader {
     }
   });
 
-  public static uploader: Multer = multer({
+  /**
+   * Поле для вызова функций multer
+   */
+  public static readonly uploader: Multer = multer({
     storage: this.storage,
     limits: {
       fileSize: 5 * 1024 ** 2
@@ -36,4 +40,12 @@ export default class Uploader {
       }
     }
   });
+
+  /**
+   * Функция для удаления файла с диска
+   */
+  public static async deleteFile(fileName: string) {
+    fileName = path.parse(fileName).base // Защита, если будет введён полный путь к файлу  
+    await fsp.rm(path.join(pd.uploadsDir, fileName), { force: true })
+  }
 }

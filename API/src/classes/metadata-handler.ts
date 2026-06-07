@@ -19,6 +19,18 @@ export default class MetadataHandler {
   }
 
   /**
+   * Автоматически удаляет метаданные из files.json по id
+   */
+  public static async deleteByID(id: string): Promise<boolean> {
+    await this.loadFromDisk();
+    const index: number = this.metadataArr.findIndex(val => val.id === id);
+    if (index === -1) return false;
+    this.metadataArr.splice(index, 1);
+    await this.saveToDisk();
+    return true;
+  }
+
+  /**
    * Получает загруженный массив метаданных
    */
   public static async getMetadataArr(): Promise<MetadataDTO[]> {

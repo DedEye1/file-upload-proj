@@ -6,7 +6,9 @@ import MetadataDTO from '../dto/metadata-dto.js';
 import ErrorDTO from '../dto/error-dto.js';
 import FilesPageDTO from '../dto/files-page-dto.js';
 import err_dto from '../dto/error-dto.js'
+
 import mh from '../classes/metadata-handler.js';
+import uh from '../classes/uploads-handler.js';
 import pd from '../classes/program-data.js';
 
 /**
@@ -118,7 +120,22 @@ export default class FilesController {
     res.status(sc.StatusCodes.OK).json(fpDTO);
   }
 
-  public deleteFilesByID(req: Request, res: Response) {
-    const id = req.params.id;
+  /**
+   * Функция для обработки DELETE по id
+   */
+  public async deleteFilesByID(req: Request, res: Response) {
+    let id = req.params.id as string;
+    id = path.parse(id ?? '').name; // Убрать расширение запроса, если таковое присутствует
+    const metadata: MetadataDTO | undefined = await mh.getMetadataByID(id);
+    // Проверка присутствия метаданных
+    if (metadata) {
+      await mh.deleteByID(metadata.id);
+      await uh.deleteFile(metadata.storedName);
+      console.log(`Удалён файл ${metadata.storedName}`);
+      res.sendStatus(sc.StatusCodes.NO_CONTENT);
+    } else {
+      console.error(`Ошибка ${sc.StatusCodes.NOT_FOUND}`);
+      res.sendStatus(sc.StatusCodes.NOT_FOUND);
+    }
   }
 }
