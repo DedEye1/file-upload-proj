@@ -2,20 +2,11 @@
   "name": "api",
   "version": "1.0.0",
   "description": "Backend part of a project",
-  "homepage": "https://github.com/DedEye1/file-upload-proj#readme",
-  "bugs": {
-    "url": "https://github.com/DedEye1/file-upload-proj/issues"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+ssh://git@github.com/DedEye1/file-upload-proj.git"
-  },
   "license": "ISC",
   "author": "DedEye1",
   "type": "module",
   "main": "src/program.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon",
     "clean": "rm -rf uploads data"
   },
@@ -24,13 +15,12 @@
     "express": "^5.2.1",
     "http-status-codes": "^2.3.0",
     "multer": "^2.1.1",
-    "tsx": "^4.22.4",
     "uuid": "^14.0.0"
   },
   "devDependencies": {
     "@types/express": "^5.0.6",
     "@types/multer": "^2.1.0",
     "nodemon": "^3.1.14",
-    "ts-node": "^10.9.2"
+    "tsx": "^4.22.4"
   }
 }

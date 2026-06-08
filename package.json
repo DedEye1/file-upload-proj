@@ -1,7 +1,7 @@
 {
-  "name": "web",
+  "name": "file-upload-proj",
   "version": "1.0.0",
-  "description": "Frontent part of a project",
+  "description": "Root of a project",
   "homepage": "https://github.com/DedEye1/file-upload-proj#readme",
   "bugs": {
     "url": "https://github.com/DedEye1/file-upload-proj/issues"
@@ -12,12 +12,11 @@
   },
   "license": "ISC",
   "author": "DedEye1",
-  "type": "commonjs",
-  "main": "src/program.ts",
+  "workspaces": [
+    "packages/*"
+  ],
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "dependencies": {
-    "nextjs": "^0.0.3"
+    "server": "npm start -w packages/API",
+    "client": "npm start -w packages/Web"
   }
 }

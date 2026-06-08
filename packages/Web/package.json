@@ -1,0 +1,17 @@
+{
+  "name": "web",
+  "version": "1.0.0",
+  "description": "Frontent part of a project",
+  "license": "ISC",
+  "author": "DedEye1",
+  "type": "commonjs",
+  "scripts": {
+    "start": "next"
+  },
+  "dependencies": {
+    "next": "^16.2.7",
+    "nextjs": "^0.0.3",
+    "react": "^19.2.7",
+    "react-dom": "^19.2.7"
+  }
+}
