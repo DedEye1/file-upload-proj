@@ -22,8 +22,8 @@ export function MainPageLayout() {
     setLoading(false);
   };
 
-  if (loading) return <div>Загрузка...</div>;
-  if (!filesPage || filesPage.items.length === 0) return <div>Нет файлов</div>;
+  if (loading) return <p>Загрузка...</p>;
+  if (!filesPage || filesPage.items.length === 0) return <p>Нет файлов</p>;
 
   return (
     <div>

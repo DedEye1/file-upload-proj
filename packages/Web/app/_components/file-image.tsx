@@ -22,6 +22,8 @@ export function FileImage({ metadata }: { metadata: MetadataDTO }) {
     setLoading(false);
   }
 
+  if (loading) return <p>Загрузка...</p>;
+
   return (
     <div>
       <img src={imageURL} alt={metadata.originalName} width="200" height="150" />
