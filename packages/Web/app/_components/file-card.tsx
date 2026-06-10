@@ -1,5 +1,4 @@
 'use client';
-import pd from '../_classes/program-data';
 import MetadataDTO from '@dto/metadata-dto';
 import { FileImage } from './file-image';
 

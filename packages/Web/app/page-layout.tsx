@@ -1,12 +1,18 @@
 'use client';
 import { useEffect, useState, } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { FileCard } from '@components/file-card';
 import FilesPageDTO from '@dto/files-page-dto';
 import pd from '@classes/program-data';
 
 export function MainPageLayout() {
+  const searchParams = useSearchParams();
+  const pageStr: string = searchParams.get('page') ?? '1';
+  const page = Number(pageStr);
+
   const [filesPage, setFilesPage] = useState<FilesPageDTO>();
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<Error>();
 
   useEffect(() => {
     fetchFiles();
@@ -15,14 +21,19 @@ export function MainPageLayout() {
   const fetchFiles = async () => {
     setLoading(true);
 
-    const response: Response = await fetch(`${pd.apiUrl}/api/files/`);
-    const data: FilesPageDTO = await response.json();
+    try {
+      const response: Response = await fetch(`${pd.apiUrl}/api/files/?page=${page}`);
+      const data: FilesPageDTO = await response.json();
+      setFilesPage(data);
+    } catch (err: any) {
+      setError(err);
+    }
 
-    setFilesPage(data);
     setLoading(false);
   };
 
   if (loading) return <p>Загрузка...</p>;
+  if (error) return <p>Ошибка загрузки: {error.message}</p>;
   if (!filesPage || filesPage.items.length === 0) return <p>Нет файлов</p>;
 
   return (
