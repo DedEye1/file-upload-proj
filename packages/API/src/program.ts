@@ -5,7 +5,14 @@ import file_control from './controllers/files-controller.js'
 import pd from './classes/program-data.js'
 
 const app: Application = express();
-app.set('json spaces', 2);
+app.set('json spaces', 2); // Форматирование json
+// Подключение CORS
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, DELETE');
+  res.header('Access-Control-Allow-Headers', 'Content-Type');
+  next();
+});
 
 const fc: file_control = new file_control();
 app.post('/api/files', fc.postFilesWrapper(uh.uploader.single('file')));

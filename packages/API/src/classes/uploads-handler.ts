@@ -4,7 +4,7 @@ import fsp from 'fs/promises';
 import path from 'path';
 import { v4 } from 'uuid';
 
-import pd from './program-data.js'
+import pd from './program-data'
 
 /**
  * Класс настройки multer

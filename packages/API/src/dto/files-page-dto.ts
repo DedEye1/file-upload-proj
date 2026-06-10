@@ -1,4 +1,4 @@
-import MetadataDTO from './metadata-dto.js'
+import MetadataDTO from './metadata-dto'
 
 /**
  * Класс передачи страниц метаданных

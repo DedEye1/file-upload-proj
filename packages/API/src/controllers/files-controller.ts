@@ -2,14 +2,14 @@ import type { Response, Request, NextFunction } from 'express';
 import sc from 'http-status-codes';
 import path from 'path';
 
-import MetadataDTO from '../dto/metadata-dto.js';
-import ErrorDTO from '../dto/error-dto.js';
-import FilesPageDTO from '../dto/files-page-dto.js';
-import err_dto from '../dto/error-dto.js'
+import MetadataDTO from '../dto/metadata-dto';
+import ErrorDTO from '../dto/error-dto';
+import FilesPageDTO from '../dto/files-page-dto';
+import err_dto from '../dto/error-dto'
 
-import mh from '../classes/metadata-handler.js';
-import uh from '../classes/uploads-handler.js';
-import pd from '../classes/program-data.js';
+import mh from '../classes/metadata-handler';
+import uh from '../classes/uploads-handler';
+import pd from '../classes/program-data';
 
 /**
  * Класс-контроллер запросов к файлам
@@ -44,12 +44,12 @@ export default class FilesController {
         errDTO = { error: 'Неизвестная ошибка', code: 'UNKNOWN_ERR' };
       }
       console.error(`Ошибка ${errDTO.code}`);
-      res.status(sc.StatusCodes.BAD_REQUEST).json(errDTO);
+      res.status(sc.BAD_REQUEST).json(errDTO);
       // Проверка на отсутствие файла
     } else if (!file) {
       errDTO = { error: 'Файл не был предоставлен', code: 'FILE_REQUIRED' };
       console.error(`Ошибка ${errDTO.code}`);
-      res.status(sc.StatusCodes.BAD_REQUEST).json(errDTO);
+      res.status(sc.BAD_REQUEST).json(errDTO);
       // Создание и запись метаданных в files.json
     } else {
       const dataDTO: MetadataDTO = {
@@ -63,7 +63,7 @@ export default class FilesController {
 
       console.log(`Принят файл ${dataDTO.originalName}`);
       await mh.append(dataDTO);
-      res.status(sc.StatusCodes.CREATED).json(dataDTO);
+      res.status(sc.CREATED).json(dataDTO);
     }
   }
 
@@ -89,13 +89,13 @@ export default class FilesController {
         if (err && !res.headersSent) {
           errDTO = { error: 'Неизвестная ошибка', code: 'UNKNOWN_ERR' };
           console.error(`Ошибка ${errDTO.code}`);
-          res.status(sc.StatusCodes.BAD_REQUEST).json(errDTO);
+          res.status(sc.BAD_REQUEST).json(errDTO);
         }
       });
     } else {
       errDTO = { error: 'Запись о файле отсутствует', code: 'NOT_FOUND' };
       console.error(`Ошибка ${errDTO.code}`);
-      res.status(sc.StatusCodes.NOT_FOUND).json(errDTO);
+      res.status(sc.NOT_FOUND).json(errDTO);
     }
   }
 
@@ -117,7 +117,7 @@ export default class FilesController {
       total: metadataArr.length
     }
 
-    res.status(sc.StatusCodes.OK).json(fpDTO);
+    res.status(sc.OK).json(fpDTO);
   }
 
   /**
@@ -132,10 +132,10 @@ export default class FilesController {
       await mh.deleteByID(metadata.id);
       await uh.deleteFile(metadata.storedName);
       console.log(`Удалён файл ${metadata.storedName}`);
-      res.sendStatus(sc.StatusCodes.NO_CONTENT);
+      res.sendStatus(sc.NO_CONTENT);
     } else {
-      console.error(`Ошибка ${sc.StatusCodes.NOT_FOUND}`);
-      res.sendStatus(sc.StatusCodes.NOT_FOUND);
+      console.error(`Ошибка ${sc.NOT_FOUND}`);
+      res.sendStatus(sc.NOT_FOUND);
     }
   }
 }
