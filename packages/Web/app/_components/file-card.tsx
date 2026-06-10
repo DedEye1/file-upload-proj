@@ -1,6 +1,6 @@
 'use client';
 import pd from '../_classes/program-data';
-import MetadataDTO from 'api/src/dto/metadata-dto';
+import MetadataDTO from '@dto/metadata-dto';
 import { FileImage } from './file-image';
 
 export function FileCard({ metadata }: { metadata: MetadataDTO }) {

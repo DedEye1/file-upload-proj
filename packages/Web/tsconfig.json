@@ -1,6 +1,21 @@
 {
   // Visit https://aka.ms/tsconfig to read more about this file
   "compilerOptions": {
+    // Алиасы
+    "paths": {
+      "@/*": [
+        "./*"
+      ],
+      "@classes/*": [
+        "./app/_classes/*"
+      ],
+      "@components/*": [
+        "./app/_components/*"
+      ],
+      "@dto/*": [
+        "../dto/*"
+      ]
+    },
     // Environment Settings
     // See also https://aka.ms/tsconfig/module
     "module": "esnext",

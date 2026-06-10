@@ -1,7 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
 import pd from '../_classes/program-data';
-import MetadataDTO from 'api/src/dto/metadata-dto';
+import MetadataDTO from '@dto/metadata-dto';
 
 export function FileImage({ metadata }: { metadata: MetadataDTO }) {
   const [imageURL, setImageURL] = useState<string>();

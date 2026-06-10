@@ -1,8 +1,8 @@
 'use client';
-import pd from './_classes/program-data';
 import { useEffect, useState, } from 'react';
-import { FileCard } from './_components/file-card';
-import FilesPageDTO from 'api/src/dto/files-page-dto';
+import { FileCard } from '@components/file-card';
+import FilesPageDTO from '@dto/files-page-dto';
+import pd from '@classes/program-data';
 
 export function MainPageLayout() {
   const [filesPage, setFilesPage] = useState<FilesPageDTO>();
