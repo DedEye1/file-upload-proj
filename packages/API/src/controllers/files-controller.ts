@@ -5,7 +5,6 @@ import path from 'path';
 import MetadataDTO from '@dto/metadata-dto';
 import ErrorDTO from '@dto/error-dto';
 import FilesPageDTO from '@dto/files-page-dto';
-import err_dto from '@dto/error-dto'
 
 import mh from '@classes/metadata-handler';
 import uh from '@classes/uploads-handler';
@@ -33,7 +32,7 @@ export default class FilesController {
     // Файл, полученный от multer
     const file: Express.Multer.File | undefined = req.file;
 
-    let errDTO: err_dto = new err_dto();
+    let errDTO: ErrorDTO;
     // Обработка ошибок внутри multer
     if (err) {
       if (err.message === 'INVALID_MIME') {
