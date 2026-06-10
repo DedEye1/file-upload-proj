@@ -1,6 +1,6 @@
 'use client';
 import { useEffect, useState } from 'react';
-import pd from '../_classes/program-data';
+import pd from '@classes/program-data';
 import MetadataDTO from '@dto/metadata-dto';
 
 export function FileImage({ metadata }: { metadata: MetadataDTO }) {

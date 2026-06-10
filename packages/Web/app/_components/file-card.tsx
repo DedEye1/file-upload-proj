@@ -1,12 +1,14 @@
 'use client';
 import MetadataDTO from '@dto/metadata-dto';
-import { FileImage } from './file-image';
+import { FileImage } from '@components/file-image';
 
 export function FileCard({ metadata }: { metadata: MetadataDTO }) {
+  const redirectPath: string = `/file/${metadata.id}`;
+
   return (
     <div>
       <h3>
-        <a href="/file">{metadata.originalName}</a>
+        <a href={redirectPath}>{metadata.originalName}</a>
       </h3>
       <FileImage metadata={metadata} />
       <p>Тип: {metadata.mime}</p>
