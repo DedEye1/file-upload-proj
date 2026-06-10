@@ -1,7 +1,7 @@
 import fs from 'fs/promises';
 
-import MetadataDTO from '../dto/metadata-dto';
-import pd from './program-data'
+import MetadataDTO from '@dto/metadata-dto';
+import pd from '@classes/program-data'
 
 /**
  * Класс обработки файла files.json

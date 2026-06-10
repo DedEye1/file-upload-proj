@@ -1,4 +1,4 @@
-import MetadataDTO from './metadata-dto'
+import MetadataDTO from '@dto/metadata-dto'
 
 /**
  * Класс передачи страниц метаданных

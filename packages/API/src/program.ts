@@ -1,8 +1,8 @@
 import express, { type Application } from 'express';
 
-import uh from './classes/uploads-handler.js';
-import file_control from './controllers/files-controller.js'
-import pd from './classes/program-data.js'
+import uh from '@classes/uploads-handler.js';
+import pd from '@classes/program-data.js'
+import file_control from '@controllers/files-controller.js'
 
 const app: Application = express();
 app.set('json spaces', 2); // Форматирование json

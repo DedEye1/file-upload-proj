@@ -2,14 +2,14 @@ import type { Response, Request, NextFunction } from 'express';
 import sc from 'http-status-codes';
 import path from 'path';
 
-import MetadataDTO from '../dto/metadata-dto';
-import ErrorDTO from '../dto/error-dto';
-import FilesPageDTO from '../dto/files-page-dto';
-import err_dto from '../dto/error-dto'
+import MetadataDTO from '@dto/metadata-dto';
+import ErrorDTO from '@dto/error-dto';
+import FilesPageDTO from '@dto/files-page-dto';
+import err_dto from '@dto/error-dto'
 
-import mh from '../classes/metadata-handler';
-import uh from '../classes/uploads-handler';
-import pd from '../classes/program-data';
+import mh from '@classes/metadata-handler';
+import uh from '@classes/uploads-handler';
+import pd from '@classes/program-data';
 
 /**
  * Класс-контроллер запросов к файлам
