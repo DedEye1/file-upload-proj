@@ -32,6 +32,18 @@ export function MainPageLayout() {
     setLoading(false);
   };
 
+  const deleteFile = (id: string) => {
+    setFilesPage(prev => {
+      if (!prev) return prev;
+      const newItems = prev.items.filter(item => item.id !== id);
+      return {
+        ...prev,
+        items: newItems,
+        total: newItems.length,
+      };
+    });
+  };
+
   if (loading) return <p>Загрузка...</p>;
   if (error) return <p>Ошибка загрузки: {error.message}</p>;
   if (!filesPage || filesPage.items.length === 0) return <p>Нет файлов</p>;
@@ -41,7 +53,7 @@ export function MainPageLayout() {
       <ul>
         {filesPage.items.map((file) => (
           <li key={file.id}>
-            <FileCard metadata={file} />
+            <FileCard metadata={file} onDelete={deleteFile} />
           </li>
         ))}
       </ul>
