@@ -1,20 +1,43 @@
 'use client'
-import { FilePageLayout } from './page-layout';
-import type { Params } from "next/dist/server/request/params";
-import { useParams } from "next/navigation";
+import { useEffect, useState, } from 'react';
+import pd from '@classes/program-data';
+import { useParams } from 'next/navigation';
 
-export default function FilePage() {
-  const params: Params = useParams();
-  const id: string = params.id?.toString()!;
+export default function FilePageLayout() {
+  const id: string = useParams().id!.toString();
+
+  const [imageURL, setImageURL] = useState<string>();
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<Error>();
+
+  useEffect(() => {
+    document.title = id;
+    fetchFile();
+  }, []);
+
+  const fetchFile = async () => {
+    setLoading(true);
+
+    try {
+      const url: string = `${pd.apiUrl}/api/files/${id}`
+      const response: Response = await fetch(url);
+      if (response.status === 404) throw new Error('404');
+      const image: Blob = await response.blob();
+      const imageURL: string = URL.createObjectURL(image);
+      setImageURL(imageURL);
+    } catch (err: any) {
+      setError(err);
+    }
+
+    setLoading(false);
+  };
+
+  if (loading) return <p>Загрузка...</p>;
+  if (error) return <p>Ошибка загрузки: {error.message}</p>;
 
   return (
-    <html>
-      <head>
-        <title>{id}</title>
-      </head>
-      <body>
-        <FilePageLayout id={id} />
-      </body>
-    </html>
+    <div>
+      <img src={imageURL} alt={id} />
+    </div>
   );
 }
