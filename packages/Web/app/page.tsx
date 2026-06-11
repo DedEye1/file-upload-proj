@@ -61,6 +61,7 @@ export default function MainPageLayout() {
   return (
     <div>
       <h1>Список файлов</h1>
+      <a href="/load">Загрузка файла</a>
       {content}
     </div>
   );
