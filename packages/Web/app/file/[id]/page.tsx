@@ -21,7 +21,7 @@ export default function FilePageLayout() {
     try {
       const url: string = `${pd.apiUrl}/api/files/${id}`
       const response: Response = await fetch(url);
-      if (response.status === 404) throw new Error('404');
+      if (response.status === 404) throw new Error('Файл не найден');
       const image: Blob = await response.blob();
       const imageURL: string = URL.createObjectURL(image);
       setImageURL(imageURL);
