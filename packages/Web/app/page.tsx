@@ -52,8 +52,8 @@ export default function MainPageLayout() {
   if (loading) content = <p>Загрузка...</p>;
   else if (error) content = <p>Ошибка загрузки: {error.message}</p>;
   else if (!filesPage || filesPage.items.length === 0) content = <p>Нет файлов</p>;
-  else content =
-    (<div>
+  else content = (
+    <div>
       <ul>
         {filesPage.items.map((file) => (
           <li key={file.id}>
@@ -62,12 +62,13 @@ export default function MainPageLayout() {
         ))}
       </ul>
       <Pagination maxPage={maxPage} />
-    </div>);
+    </div>
+  );
 
   return (
     <div>
       <h1>Список файлов</h1>
-      <a href="/load">Загрузка файла</a>
+      <a href="/load">{error ? '' : 'Загрузка файла'}</a>
       {content}
     </div>
   );
