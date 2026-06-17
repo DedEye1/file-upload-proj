@@ -16,18 +16,28 @@ export default function LoadPageLayout() {
 
     try {
       const response: Response = await fetch(`${pd.apiUrl}/api/files/`, { method: 'POST', body: formData });
-      if (response.status === 400) {
-        const err: ErrorDTO = await response.json();
-        setMessage(err.error);
-      } else setMessage('Файл принят');
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({
+          error: `Ошибка ${response.status}: ${response.statusText}`
+        }));
+        setMessage(errorData.error || 'Ошибка загрузки');
+        return;
+      }
+
+      setMessage('Файл принят');
     } catch (err: any) {
-      setMessage(err.message);
+      setMessage(`Ошибка: ${err.message || 'Не удалось отправить файл'}`);
     }
   }
 
   return (
     <div>
-      <input type="file" onChange={e => { setFile(e.target.files?.[0]); setHasContent(true); }} />
+      <input type="file" onChange={e => {
+        const selectedFile = e.target.files?.[0];
+        setFile(selectedFile);
+        setHasContent(!!selectedFile);
+        setMessage('');
+      }} />
       <button type="button" onClick={sendFile} disabled={!hasContent}>Отправить</button>
       <p>{message ? message : ''}</p>
     </div>
