@@ -126,15 +126,25 @@ export default class FilesController {
     let id = req.params.id as string;
     id = path.parse(id ?? '').name; // Убрать расширение запроса, если таковое присутствует
     const metadata: MetadataDTO | undefined = await mh.getMetadataByID(id);
+    let errDTO: ErrorDTO;
+
     // Проверка присутствия метаданных
-    if (metadata) {
-      await mh.deleteByID(metadata.id);
+    if (!metadata) {
+      errDTO = { error: 'Запись о файле отсутствует', code: 'NOT_FOUND' }
+      console.error(`Ошибка ${sc.NOT_FOUND}`);
+      return res.status(sc.NOT_FOUND).json(errDTO);
+    }
+
+    // Проверка удаления файла (сначала удаляется файл, затем запись в метаданных)
+    try {
       await uh.deleteFile(metadata.storedName);
+      await mh.deleteByID(metadata.id);
       console.log(`Удалён файл ${metadata.storedName}`);
       res.sendStatus(sc.NO_CONTENT);
-    } else {
-      console.error(`Ошибка ${sc.NOT_FOUND}`);
-      res.sendStatus(sc.NOT_FOUND);
+    } catch (err: any) {
+      errDTO = { error: 'Не удалось удалить файл', code: 'INTERNAL_SERVER_ERROR' }
+      console.error(`Ошибка удаления: ${err.message}`);
+      return res.status(sc.INTERNAL_SERVER_ERROR).json(errDTO);
     }
   }
 }
