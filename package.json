@@ -17,6 +17,10 @@
   ],
   "scripts": {
     "server": "npm start -w packages/API",
-    "client": "npm start -w packages/Web"
+    "client": "npm start -w packages/Web",
+    "dev": "concurrently \"npm run server\" \"npm run client\""
+  },
+  "devDependencies": {
+    "concurrently": "^10.0.3"
   }
 }
