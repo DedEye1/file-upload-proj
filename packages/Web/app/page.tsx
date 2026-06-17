@@ -41,7 +41,7 @@ export default function MainPageLayout() {
       return {
         ...prev,
         items: newItems,
-        total: newItems.length,
+        total: prev.total - 1,
       };
     });
   };

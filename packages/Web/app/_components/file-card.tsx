@@ -2,13 +2,24 @@
 import MetadataDTO from '@dto/metadata-dto';
 import { FileImage } from '@components/file-image';
 import pd from '@classes/program-data'
+import type ErrorDTO from '@dto/error-dto';
 
 export function FileCard({ metadata, onDelete }: { metadata: MetadataDTO, onDelete: (id: string) => void }) {
   const redirectPath: string = `/file/${metadata.id}`;
 
   const deleteFile = async () => {
-    await fetch(`${pd.apiUrl}/api/files/${metadata.id}`, { method: 'DELETE' })
-    onDelete(metadata.id);
+    try {
+      const response = (await fetch(`${pd.apiUrl}/api/files/${metadata.id}`, { method: 'DELETE' }));
+      const errDTO: ErrorDTO = await response.json().catch(() => ({ error: 'Неизвестная ошибка' }));
+      if (response.status === 404) alert('Ошибка: Запись о файле отсутствует на сервере, его карточка будет удалена');
+      else if (!response.ok) {
+        alert(`Ошибка удаления: ${errDTO.error}`);
+        return;
+      }
+      onDelete(metadata.id);
+    } catch (err: any) {
+      alert(`Ошибка удаления: ${err.message || 'Не удалось удалить файл'}`);
+    }
   }
 
   return (
