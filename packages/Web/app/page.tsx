@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useState, type JSX, } from 'react';
+import { Suspense, useEffect, useState, type JSX, } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { FileCard } from '@components/file-card';
 import { Pagination } from '@components/pagination';
@@ -61,7 +61,9 @@ export default function MainPageLayout() {
           </li>
         ))}
       </ul>
-      <Pagination maxPage={maxPage} />
+      <Suspense fallback={'Загрузка пагинации...'}>
+        <Pagination maxPage={maxPage} />
+      </Suspense>
     </div>
   );
 

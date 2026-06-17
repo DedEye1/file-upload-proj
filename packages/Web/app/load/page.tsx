@@ -15,9 +15,9 @@ export default function LoadPageLayout() {
     formData.append('file', file);
 
     try {
-      const responce: Response = await fetch(`${pd.apiUrl}/api/files/`, { method: 'POST', body: formData });
-      if (responce.status === 400) {
-        const err: ErrorDTO = await responce.json();
+      const response: Response = await fetch(`${pd.apiUrl}/api/files/`, { method: 'POST', body: formData });
+      if (response.status === 400) {
+        const err: ErrorDTO = await response.json();
         setMessage(err.error);
       } else setMessage('Файл принят');
     } catch (err: any) {
