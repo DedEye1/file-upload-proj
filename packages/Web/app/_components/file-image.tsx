@@ -33,7 +33,9 @@ export function FileImage({ metadata }: { metadata: MetadataDTO }) {
 
   return (
     <div>
-      <img src={imageURL} alt={metadata.originalName} width="200" height="150" />
+      {metadata.mime === 'application/pdf' ?
+        '' :
+        <img src={imageURL} alt={metadata.originalName} width="200" height="150" />}
     </div>
   );
 }
